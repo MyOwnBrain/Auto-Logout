@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "auto-logout",
+  "version": "${version}",
+  "name": "Auto Logout",
+  "description": "Automatically disconnects when health reaches a threshold.",
+  "authors": ["MyOwnBrain"],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/auto-logout/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "de.myownbrain.autoLogout.client.AutoLogoutClient"
+    ],
+    "main": [
+      "de.myownbrain.autoLogout.AutoLogout"
+    ],
+    "modmenu": [
+      "de.myownbrain.autoLogout.client.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "auto-logout.mixins.json",
+    {
+      "config": "auto-logout.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": ">=${minecraft_version}",
+    "modmenu": ">=11.0.3",
+    "cloth-config": ">=15.0.140+fabric"
+  },
+  "custom": {
+    "modmenu": {
+      "modmenu_api": true
+    }
+  }
+}
