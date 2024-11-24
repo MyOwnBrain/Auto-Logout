@@ -64,7 +64,8 @@ public class ClientCommandRegistration {
                 .append(Text.literal("/auto-logout enable").styled(style -> style.withColor(Formatting.GREEN)).append(Text.literal(" - Enables the mod\n").styled(style -> style.withColor(Formatting.WHITE).withBold(false))))
                 .append(Text.literal("/auto-logout disable").styled(style -> style.withColor(Formatting.RED)).append(Text.literal(" - Disables the mod\n").styled(style -> style.withColor(Formatting.WHITE).withBold(false))))
                 .append(Text.literal("/auto-logout threshold <value>").styled(style -> style.withColor(Formatting.AQUA)).append(Text.literal(" - Sets the threshold\n").styled(style -> style.withColor(Formatting.WHITE).withBold(false))))
-                .append(Text.literal("/auto-logout threshold").styled(style -> style.withColor(Formatting.DARK_PURPLE)).append(Text.literal(" - Displays the current threshold").styled(style -> style.withColor(Formatting.WHITE).withBold(false)))))
+                .append(Text.literal("/auto-logout threshold").styled(style -> style.withColor(Formatting.DARK_PURPLE)).append(Text.literal(" - Displays the current threshold\n").styled(style -> style.withColor(Formatting.WHITE).withBold(false))))
+                .append(Text.literal("/auto-logout help").styled(style -> style.withColor(Formatting.YELLOW)).append(Text.literal(" - Displays the this help Menu").styled(style -> style.withColor(Formatting.WHITE).withBold(false)))))
         ;
         return Command.SINGLE_SUCCESS;
     }
