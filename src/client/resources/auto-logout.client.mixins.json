@@ -1,11 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "de.myownbrain.autoLogout.mixin.client",
+  "package": "de.myownbrain.autoLogout.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+  ]
 }

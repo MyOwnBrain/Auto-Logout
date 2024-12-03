@@ -15,8 +15,11 @@ public class ConfigManager {
 
     public static boolean isModEnabled = true;
     public static float healthThreshold = 4.0f;
-
     public static String keyBinding = "key.keyboard.unknown";
+
+    public static boolean isEntityTrackingEnabled = true;
+    public static int nearbyEntityCount = 5;
+    public static double radius = 20;
 
     public static void loadConfig() {
         if (CONFIG_FILE.exists()) {
@@ -50,6 +53,10 @@ public class ConfigManager {
         boolean isModEnabled;
         float healthThreshold;
         String keyBinding;
+
+        boolean isEntityTrackingEnabled;
+        int nearbyEntityCount;
+        double radius;
 
         public ConfigData(boolean isModEnabled, float healthThreshold, String keyBinding) {
             this.isModEnabled = isModEnabled;

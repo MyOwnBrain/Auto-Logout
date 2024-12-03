@@ -46,6 +46,7 @@ public class ModMenuIntegration implements ModMenuApi {
                     ConfigManager.healthThreshold = newValue;
                     ConfigManager.saveConfig();
                 })
+                .setTooltip(Text.literal("When health drops below the threshold you get disconnected. (2 Health = 1 Heart)"))
                 .build()
         );
 
@@ -58,10 +59,44 @@ public class ModMenuIntegration implements ModMenuApi {
                 })
                 .build());
 
+        general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Enable Entity Tracking"), ConfigManager.isEntityTrackingEnabled)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> {
+                    ConfigManager.isEntityTrackingEnabled = newValue;
+                    ConfigManager.saveConfig();
+                })
+                .build());
+
+        general.addEntry(entryBuilder.startIntField(Text.literal("Nearby Entity Count"), ConfigManager.nearbyEntityCount)
+                .setDefaultValue(5)
+                .setMin(1)
+                .setMax(10)
+                .setSaveConsumer(newValue -> {
+                    ConfigManager.nearbyEntityCount = newValue;
+                    ConfigManager.saveConfig();
+                })
+                .setTooltip(Text.literal("Amount of the Nearby Entities displayed in the disconnect screen."))
+                .build()
+        );
+
+        general.addEntry(entryBuilder.startDoubleField(Text.literal("Tracking Radius"), ConfigManager.radius)
+                .setDefaultValue(20.0)
+                .setMin(1.0)
+                .setMax(64.0)
+                .setSaveConsumer(newValue -> {
+                    ConfigManager.radius = newValue;
+                    ConfigManager.saveConfig();
+                })
+                .setTooltip(Text.literal("Radius in which entities are tracked."))
+                .build()
+        );
+
         builder.setSavingRunnable(ConfigManager::saveConfig);
 
         return builder.build();
-    };
+    }
+
+    ;
 
     public static boolean isToggleKeyPressed() {
         if (currentKeyBinding == null) {
