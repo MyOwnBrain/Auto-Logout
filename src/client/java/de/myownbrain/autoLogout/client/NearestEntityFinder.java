@@ -3,6 +3,7 @@ package de.myownbrain.autoLogout.client;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
@@ -27,7 +28,7 @@ public class NearestEntityFinder {
 
         nearestEntity = client.world.getOtherEntities(client.player, searchBox).stream()
                 .filter(entity -> entity instanceof LivingEntity || entity instanceof MobEntity)
-                .filter(entity -> entity instanceof PlayerEntity || (entity instanceof MobEntity && ((MobEntity) entity).isAttacking()))
+                .filter(entity -> entity instanceof PlayerEntity || entity instanceof HostileEntity)
                 .sorted(Comparator.comparingDouble(entity -> playerPos.squaredDistanceTo(entity.getPos())))
                 .limit(MAX_NEAREST_ENTITIES)
                 .toList();
