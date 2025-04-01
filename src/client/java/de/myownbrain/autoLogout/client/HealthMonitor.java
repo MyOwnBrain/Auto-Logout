@@ -30,6 +30,7 @@ public class HealthMonitor {
                 }
 
                 text.append(Text.literal("\n\nAuto Logout got disabled.").styled(style -> style.withColor(Formatting.WHITE)));
+                text.append(Text.literal("\n\nMax Count: " + ConfigManager.nearbyEntityCount).styled(style -> style.withColor(Formatting.WHITE)));
 
                 client.player.networkHandler.getConnection().disconnect(text);
                 ConfigManager.isModEnabled = false;

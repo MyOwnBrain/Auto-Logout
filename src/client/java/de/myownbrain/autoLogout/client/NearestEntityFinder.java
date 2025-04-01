@@ -14,7 +14,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NearestEntityFinder {
-    private static final int MAX_NEAREST_ENTITIES = ConfigManager.nearbyEntityCount;
     private static List<Entity> nearestEntity = new ArrayList<>();
 
     public static void updateNearestEntities(MinecraftClient client, double radius) {
@@ -30,7 +29,7 @@ public class NearestEntityFinder {
                 .filter(entity -> entity instanceof LivingEntity || entity instanceof MobEntity)
                 .filter(entity -> entity instanceof PlayerEntity || entity instanceof HostileEntity)
                 .sorted(Comparator.comparingDouble(entity -> playerPos.squaredDistanceTo(entity.getPos())))
-                .limit(MAX_NEAREST_ENTITIES)
+                .limit(ConfigManager.nearbyEntityCount)
                 .toList();
     }
 

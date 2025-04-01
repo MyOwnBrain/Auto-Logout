@@ -29,6 +29,9 @@ public class ConfigManager {
                 healthThreshold = config.healthThreshold;
                 keyBinding = (config.keyBinding != null && !config.keyBinding.isEmpty()) ? config.keyBinding : "key.keyboard.unknown";
                 ModMenuIntegration.currentKeyBinding = InputUtil.fromTranslationKey(keyBinding);
+                isEntityTrackingEnabled = config.isEntityTrackingEnabled;
+                nearbyEntityCount = config.nearbyEntityCount;
+                radius = config.radius;
             } catch (IOException e) {
                 System.err.println("Failed to load config: " + e.getMessage());
             }
@@ -41,7 +44,7 @@ public class ConfigManager {
         try {
             CONFIG_FILE.getParentFile().mkdirs();
             try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-                ConfigData config = new ConfigData(isModEnabled, healthThreshold, keyBinding != null ? ModMenuIntegration.currentKeyBinding.getTranslationKey() : "key.keyboard.unknown");
+                ConfigData config = new ConfigData(isModEnabled, healthThreshold, keyBinding != null ? ModMenuIntegration.currentKeyBinding.getTranslationKey() : "key.keyboard.unknown", isEntityTrackingEnabled, nearbyEntityCount, radius);
                 GSON.toJson(config, writer);
             }
         } catch (IOException e) {
@@ -58,10 +61,13 @@ public class ConfigManager {
         int nearbyEntityCount;
         double radius;
 
-        public ConfigData(boolean isModEnabled, float healthThreshold, String keyBinding) {
+        public ConfigData(boolean isModEnabled, float healthThreshold, String keyBinding, boolean isEntityTrackingEnabled, int nearbyEntityCount, double radius) {
             this.isModEnabled = isModEnabled;
             this.healthThreshold = healthThreshold;
             this.keyBinding = keyBinding;
+            this.isEntityTrackingEnabled = isEntityTrackingEnabled;
+            this.nearbyEntityCount = nearbyEntityCount;
+            this.radius = radius;
         }
     }
 }

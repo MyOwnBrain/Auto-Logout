@@ -20,7 +20,8 @@ public class AutoLogoutClient implements ClientModInitializer {
 
             if (ConfigManager.isModEnabled) HealthMonitor.monitorPlayerHealth(client);
 
-            if (ConfigManager.isEntityTrackingEnabled) NearestEntityFinder.updateNearestEntities(client, ConfigManager.radius);
+            if (ConfigManager.isEntityTrackingEnabled)
+                NearestEntityFinder.updateNearestEntities(client, ConfigManager.radius);
 
             if (ModMenuIntegration.currentKeyBinding != InputUtil.UNKNOWN_KEY) {
                 if (client.currentScreen != null) {
