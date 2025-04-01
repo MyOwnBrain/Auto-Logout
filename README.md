@@ -1,5 +1,10 @@
-# Auto Logout
-**Auto Logout** saves you when having low life. When enabled it leaves the sever or world you are playing on if your lifes drop below the set threshold. By default the threshold is set to 4 lifes (=2❤️).
+<p align="center">
+    <img src="https://cdn.modrinth.com/data/cached_images/87b100d859992af6a1b5f0e395d948d3949595ea.png" width="640">
+</p>
+
+<p align="center">
+    <b>Auto Logout</b> saves you when having low life. When enabled it leaves the sever or world you are playing on if your lifes drop below the set threshold. By default the threshold is set to 4 lifes (=2❤️).
+</p>
 
 ## Config
 You can use **Commands** or the **Mod Menu Integration** to change the settings to fit your wishes.
