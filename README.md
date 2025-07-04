@@ -1,13 +1,13 @@
 <p align="center">
-    <img src="https://cdn.modrinth.com/data/cached_images/87b100d859992af6a1b5f0e395d948d3949595ea.png" width="640">
+  <img src="https://cdn.modrinth.com/data/cached_images/87b100d859992af6a1b5f0e395d948d3949595ea.png" width="640">
 </p>
 
 <p align="center">
-    <b>Auto Logout</b> saves you when having low life. When enabled it leaves the sever or world you are playing on if your lifes drop below the set threshold. By default the threshold is set to 4 lifes (=2❤️).
+<b>Auto Logout</b> saves you when having low life. When enabled it leaves the sever or world you are playing on if your lifes drop below the set threshold. By default the threshold is set to 4 lifes (=2❤️).
 </p>
 
 ## Config
-You can use **Commands** or the **Mod Menu Integration** to change the settings to fit your wishes.
+Use **Commands** or the **Mod Menu Integration** to change the settings to fit your wishes.
 
 ### Commands
 ```
@@ -28,7 +28,7 @@ You can use **Commands** or the **Mod Menu Integration** to change the settings 
 **Radius value** has to be between **1** and **64**.
 
 ### Mod Menu Integration
-![Mod Menu Config page](https://cdn.modrinth.com/data/cached_images/dd33dd278c307099613a617cdb4a670ac80b0c08_0.webp)
+![https://cdn.modrinth.com/data/vJC9d9qa/images/fb632edc4894ad40aefcf42245f9d0b78f0e410b.png](https://cdn.modrinth.com/data/vJC9d9qa/images/fb632edc4894ad40aefcf42245f9d0b78f0e410b.png)
 
 ### Defaults
 - Enabled: Yes

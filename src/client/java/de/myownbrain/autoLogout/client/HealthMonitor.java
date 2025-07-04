@@ -13,7 +13,7 @@ public class HealthMonitor {
     static DecimalFormat coordsFormat = new DecimalFormat("#");
 
     public static void monitorPlayerHealth(MinecraftClient client) {
-        if (ConfigManager.isModEnabled) {
+        if (ConfigManager.isModEnabled && client.player != null) {
             float health = client.player.getHealth();
             if (health <= ConfigManager.healthThreshold) {
                 String playerX = coordsFormat.format(client.player.getX() >= 0 ? Math.floor(client.player.getX()) : Math.ceil(client.player.getX()));
@@ -21,7 +21,7 @@ public class HealthMonitor {
                 String playerZ = coordsFormat.format(client.player.getZ() >= 0 ? Math.floor(client.player.getZ()) : Math.ceil(client.player.getZ()));
 
                 MutableText text = Text.literal("You were disconnected due to low health by Auto Logout.\n\n").styled(style -> style.withBold(true).withColor(Formatting.GREEN))
-                        .append(Text.literal("Health: " + healthFormat.format(client.player.getHealth()) + "\n").styled(style -> style.withColor(Formatting.GOLD)))
+                        .append(Text.literal("Health: " + healthFormat.format(client.player.getHealth()) + " (≈" + Math.floor(client.player.getHealth()) / 2 + " Hearts)\n").styled(style -> style.withColor(Formatting.GOLD)))
                         .append(Text.literal(String.format("Coordinates: %s %s %s", playerX, playerY, playerZ)).styled(style -> style.withColor(Formatting.GOLD)));
 
                 if (ConfigManager.isEntityTrackingEnabled) {

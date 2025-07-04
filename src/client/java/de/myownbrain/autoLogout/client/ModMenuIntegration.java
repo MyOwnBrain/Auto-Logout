@@ -38,7 +38,7 @@ public class ModMenuIntegration implements ModMenuApi {
                 .build()
         );
 
-        general.addEntry(entryBuilder.startFloatField(Text.literal("Health threshold"), ConfigManager.healthThreshold)
+        general.addEntry(entryBuilder.startFloatField(Text.literal("Health threshold (2 Health = 1 Heart)"), ConfigManager.healthThreshold)
                 .setDefaultValue(4.0f)
                 .setMin(0.0f)
                 .setMax(20.0f)

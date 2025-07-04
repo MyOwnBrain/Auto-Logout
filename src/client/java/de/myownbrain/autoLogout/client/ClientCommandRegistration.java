@@ -47,6 +47,8 @@ public class ClientCommandRegistration {
     }
 
     private static int toggleAutoLogout(boolean enable) {
+        if (MinecraftClient.getInstance().player == null) return 0;
+
         ConfigManager.isModEnabled = enable;
         ConfigManager.saveConfig();
         MinecraftClient.getInstance().player.sendMessage(Text.literal("Auto Logout ").append(Text.literal(enable ? "enabled" : "disabled").styled(style -> style.withBold(true))).styled(style -> style.withColor(enable ? Formatting.GREEN : Formatting.RED)), false);
@@ -59,21 +61,23 @@ public class ClientCommandRegistration {
     }
 
     private static int setThreshold(int threshold) {
+        if (MinecraftClient.getInstance().player == null) return 0;
+
         if (threshold >= 0 && threshold <= 20) {
             ConfigManager.healthThreshold = threshold;
             ConfigManager.saveConfig();
             MinecraftClient.getInstance().player.sendMessage(Text.literal("Health threshold set to ").append(Text.literal(String.valueOf(ConfigManager.healthThreshold)).styled(style -> style.withBold(true))).styled(style -> style.withColor(Formatting.GOLD)), false);
-            return Command.SINGLE_SUCCESS;
         } else {
             MinecraftClient.getInstance().player.sendMessage(
                     Text.literal("Invalid threshold! Must be between 0 and 20.").styled(style -> style.withColor(Formatting.RED)),
                     false
             );
-            return Command.SINGLE_SUCCESS;
         }
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int toggleEntityTracking(boolean enable) {
+        if (MinecraftClient.getInstance().player == null) return 0;
         ConfigManager.isEntityTrackingEnabled = enable;
         ConfigManager.saveConfig();
         MinecraftClient.getInstance().player.sendMessage(Text.literal("Entity Tracking ").append(Text.literal(enable ? "enabled" : "disabled").styled(style -> style.withBold(true))).styled(style -> style.withColor(enable ? Formatting.GREEN : Formatting.RED)), false);
@@ -86,18 +90,19 @@ public class ClientCommandRegistration {
     }
 
     private static int setNearbyEntityCount(int count) {
+        if (MinecraftClient.getInstance().player == null) return 0;
+
         if (count >= 1 && count <= 10) {
             ConfigManager.nearbyEntityCount = count;
             ConfigManager.saveConfig();
             MinecraftClient.getInstance().player.sendMessage(Text.literal("Nearby Entity Count set to ").append(Text.literal(String.valueOf(ConfigManager.nearbyEntityCount)).styled(style -> style.withBold(true))).styled(style -> style.withColor(Formatting.GOLD)), false);
-            return Command.SINGLE_SUCCESS;
         } else {
             MinecraftClient.getInstance().player.sendMessage(
                     Text.literal("Invalid Nearby Entity Count! Must be between 1 and 10.").styled(style -> style.withColor(Formatting.RED)),
                     false
             );
-            return Command.SINGLE_SUCCESS;
         }
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int showTrackingRadius(FabricClientCommandSource source) {
@@ -106,18 +111,19 @@ public class ClientCommandRegistration {
     }
 
     private static int setTrackingRadius(double radius) {
+        if (MinecraftClient.getInstance().player == null) return 0;
+        
         if (radius >= 1.0 && radius <= 64.0) {
             ConfigManager.radius = radius;
             ConfigManager.saveConfig();
             MinecraftClient.getInstance().player.sendMessage(Text.literal("Tracking Radius set to ").append(Text.literal(String.valueOf(ConfigManager.radius)).styled(style -> style.withBold(true))).styled(style -> style.withColor(Formatting.GOLD)), false);
-            return Command.SINGLE_SUCCESS;
         } else {
             MinecraftClient.getInstance().player.sendMessage(
                     Text.literal("Invalid Tracking Radius! Must be between 1 and 64.").styled(style -> style.withColor(Formatting.RED)),
                     false
             );
-            return Command.SINGLE_SUCCESS;
         }
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int showHelp(FabricClientCommandSource source) {
