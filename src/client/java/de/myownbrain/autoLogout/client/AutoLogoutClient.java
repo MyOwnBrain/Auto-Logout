@@ -28,13 +28,13 @@ public class AutoLogoutClient implements ClientModInitializer {
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             if (client.player != null && ConfigManager.showJoinMessage) {
-                client.player.displayClientMessage(Component.literal("Auto Logout is ").withStyle(ConfigManager.isModEnabled ? ChatFormatting.GREEN : ChatFormatting.RED)
+                client.player.sendSystemMessage(Component.literal("Auto Logout is ").withStyle(ConfigManager.isModEnabled ? ChatFormatting.GREEN : ChatFormatting.RED)
                         .append(Component.literal(ConfigManager.isModEnabled ? "enabled " : "disabled ").withStyle(ConfigManager.isModEnabled ? ChatFormatting.GREEN : ChatFormatting.RED, ChatFormatting.BOLD))
                         .append(Component.literal("(threshold ").withStyle(ChatFormatting.GOLD))
                         .append(Component.literal(String.valueOf(ConfigManager.healthThreshold)).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD))
                         .append(Component.literal(")").withStyle(ChatFormatting.GOLD))
                         .append(Component.literal("\nEntity Tracking is ").withStyle(ConfigManager.isEntityTrackingEnabled ? ChatFormatting.GREEN : ChatFormatting.RED))
-                        .append(Component.literal(ConfigManager.isEntityTrackingEnabled ? "enabled " : "disabled ").withStyle(ConfigManager.isEntityTrackingEnabled ? ChatFormatting.GREEN : ChatFormatting.RED, ChatFormatting.BOLD)), false);
+                        .append(Component.literal(ConfigManager.isEntityTrackingEnabled ? "enabled " : "disabled ").withStyle(ConfigManager.isEntityTrackingEnabled ? ChatFormatting.GREEN : ChatFormatting.RED, ChatFormatting.BOLD)));
             }
         });
     }

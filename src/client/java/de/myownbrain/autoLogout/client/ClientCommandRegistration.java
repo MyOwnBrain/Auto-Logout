@@ -3,7 +3,7 @@ package de.myownbrain.autoLogout.client;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.ChatFormatting;
@@ -14,38 +14,38 @@ public class ClientCommandRegistration {
     public static void registerCommands() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
-                    ClientCommandManager.literal("auto-logout")
-                            .then(ClientCommandManager.literal("enable")
+                    ClientCommands.literal("auto-logout")
+                            .then(ClientCommands.literal("enable")
                                     .executes(ctx -> toggleAutoLogout(true)))
-                            .then(ClientCommandManager.literal("disable")
+                            .then(ClientCommands.literal("disable")
                                     .executes(ctx -> toggleAutoLogout(false)))
-                            .then(ClientCommandManager.literal("threshold")
+                            .then(ClientCommands.literal("threshold")
                                     .executes(ctx -> showThreshold(ctx.getSource()))
-                                    .then(ClientCommandManager.argument("value", IntegerArgumentType.integer(0, 20))
+                                    .then(ClientCommands.argument("value", IntegerArgumentType.integer(0, 20))
                                             .executes(ctx -> setThreshold(IntegerArgumentType.getInteger(ctx, "value")))
                                     )
                             )
-                            .then(ClientCommandManager.literal("entity-tracking")
-                                    .then(ClientCommandManager.literal("enable")
+                            .then(ClientCommands.literal("entity-tracking")
+                                    .then(ClientCommands.literal("enable")
                                             .executes(ctx -> toggleEntityTracking(true)))
-                                    .then(ClientCommandManager.literal("disable")
+                                    .then(ClientCommands.literal("disable")
                                             .executes(ctx -> toggleEntityTracking(false)))
-                                    .then(ClientCommandManager.literal("entity-count")
+                                    .then(ClientCommands.literal("entity-count")
                                             .executes(ctx -> showNearbyEntityCount(ctx.getSource()))
-                                            .then(ClientCommandManager.argument("value", IntegerArgumentType.integer(1, 10))
+                                            .then(ClientCommands.argument("value", IntegerArgumentType.integer(1, 10))
                                                     .executes(ctx -> setNearbyEntityCount(IntegerArgumentType.getInteger(ctx, "value")))))
-                                    .then(ClientCommandManager.literal("radius")
+                                    .then(ClientCommands.literal("radius")
                                             .executes(ctx -> showTrackingRadius(ctx.getSource()))
-                                            .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(1.0, 64.0))
+                                            .then(ClientCommands.argument("value", DoubleArgumentType.doubleArg(1.0, 64.0))
                                                     .executes(ctx -> setTrackingRadius(DoubleArgumentType.getDouble(ctx, "value")))))
                             )
-                            .then(ClientCommandManager.literal("help")
+                            .then(ClientCommands.literal("help")
                                     .executes(ctx -> showHelp(ctx.getSource()))
                             )
-                            .then(ClientCommandManager.literal("join-message")
-                                    .then(ClientCommandManager.literal("enable")
+                            .then(ClientCommands.literal("join-message")
+                                    .then(ClientCommands.literal("enable")
                                             .executes(ctx -> toggleJoinMessage(true)))
-                                    .then(ClientCommandManager.literal("disable")
+                                    .then(ClientCommands.literal("disable")
                                             .executes(ctx -> toggleJoinMessage(false)))
                             )
             );
@@ -57,7 +57,7 @@ public class ClientCommandRegistration {
 
         ConfigManager.isModEnabled = enable;
         ConfigManager.saveConfig();
-        Minecraft.getInstance().player.displayClientMessage(Component.literal("Auto Logout ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)), false);
+        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Auto Logout ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -72,11 +72,10 @@ public class ClientCommandRegistration {
         if (threshold >= 0 && threshold <= 20) {
             ConfigManager.healthThreshold = threshold;
             ConfigManager.saveConfig();
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("Health threshold set to ").append(Component.literal(String.valueOf(ConfigManager.healthThreshold)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Health threshold set to ").append(Component.literal(String.valueOf(ConfigManager.healthThreshold)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         } else {
-            Minecraft.getInstance().player.displayClientMessage(
-                    Component.literal("Invalid threshold! Must be between 0 and 20.").withStyle(style -> style.withColor(ChatFormatting.RED)),
-                    false
+            Minecraft.getInstance().player.sendSystemMessage(
+                    Component.literal("Invalid threshold! Must be between 0 and 20.").withStyle(style -> style.withColor(ChatFormatting.RED))
             );
         }
         return Command.SINGLE_SUCCESS;
@@ -86,7 +85,7 @@ public class ClientCommandRegistration {
         if (Minecraft.getInstance().player == null) return 0;
         ConfigManager.isEntityTrackingEnabled = enable;
         ConfigManager.saveConfig();
-        Minecraft.getInstance().player.displayClientMessage(Component.literal("Entity Tracking ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)), false);
+        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Entity Tracking ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -101,11 +100,10 @@ public class ClientCommandRegistration {
         if (count >= 1 && count <= 10) {
             ConfigManager.nearbyEntityCount = count;
             ConfigManager.saveConfig();
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("Nearby Entity Count set to ").append(Component.literal(String.valueOf(ConfigManager.nearbyEntityCount)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Nearby Entity Count set to ").append(Component.literal(String.valueOf(ConfigManager.nearbyEntityCount)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         } else {
-            Minecraft.getInstance().player.displayClientMessage(
-                    Component.literal("Invalid Nearby Entity Count! Must be between 1 and 10.").withStyle(style -> style.withColor(ChatFormatting.RED)),
-                    false
+            Minecraft.getInstance().player.sendSystemMessage(
+                    Component.literal("Invalid Nearby Entity Count! Must be between 1 and 10.").withStyle(style -> style.withColor(ChatFormatting.RED))
             );
         }
         return Command.SINGLE_SUCCESS;
@@ -122,11 +120,10 @@ public class ClientCommandRegistration {
         if (radius >= 1.0 && radius <= 64.0) {
             ConfigManager.radius = radius;
             ConfigManager.saveConfig();
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("Tracking Radius set to ").append(Component.literal(String.valueOf(ConfigManager.radius)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Tracking Radius set to ").append(Component.literal(String.valueOf(ConfigManager.radius)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         } else {
-            Minecraft.getInstance().player.displayClientMessage(
-                    Component.literal("Invalid Tracking Radius! Must be between 1 and 64.").withStyle(style -> style.withColor(ChatFormatting.RED)),
-                    false
+            Minecraft.getInstance().player.sendSystemMessage(
+                    Component.literal("Invalid Tracking Radius! Must be between 1 and 64.").withStyle(style -> style.withColor(ChatFormatting.RED))
             );
         }
         return Command.SINGLE_SUCCESS;
@@ -137,7 +134,7 @@ public class ClientCommandRegistration {
 
         ConfigManager.showJoinMessage = enable;
         ConfigManager.saveConfig();
-        Minecraft.getInstance().player.displayClientMessage(Component.literal("Join Message ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)), false);
+        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Join Message ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -161,4 +158,5 @@ public class ClientCommandRegistration {
         );
 
         return Command.SINGLE_SUCCESS;
-    }}
+    }
+}

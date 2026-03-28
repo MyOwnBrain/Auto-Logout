@@ -3,6 +3,7 @@ package de.myownbrain.autoLogout.client;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

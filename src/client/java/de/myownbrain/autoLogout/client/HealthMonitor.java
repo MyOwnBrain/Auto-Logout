@@ -2,6 +2,7 @@ package de.myownbrain.autoLogout.client;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;

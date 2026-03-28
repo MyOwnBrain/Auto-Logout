@@ -27,12 +27,11 @@ public class ModMenuIntegration {
             ConfigManager.saveConfig();
 
             assert client.player != null;
-            client.player.displayClientMessage(
+            client.player.sendSystemMessage(
                     Component.literal("Auto Logout ")
                             .append(Component.literal(ConfigManager.isModEnabled ? "enabled" : "disabled")
                                     .withStyle(s -> s.withBold(true)))
-                            .withStyle(s -> s.withColor(ConfigManager.isModEnabled ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                    false
+                            .withStyle(s -> s.withColor(ConfigManager.isModEnabled ? ChatFormatting.GREEN : ChatFormatting.RED))
             );
         }
 
