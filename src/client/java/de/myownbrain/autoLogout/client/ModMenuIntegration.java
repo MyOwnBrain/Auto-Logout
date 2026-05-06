@@ -9,12 +9,14 @@ import net.minecraft.network.chat.Component;
 public class ModMenuIntegration {
     public static boolean isAvailable() {
         return FabricLoader.getInstance().isModLoaded("modmenu")
-                && FabricLoader.getInstance().isModLoaded("cloth-config2");
+            && FabricLoader.getInstance().isModLoaded("cloth-config2");
     }
 
     private static boolean wasKeyPressed = false;
 
-    public static void handleToggleKey(Minecraft client) {
+    public static void handleToggleKey() {
+        Minecraft client = Minecraft.getInstance();
+
         boolean isPressed = ModMenuIntegrationImpl.isToggleKeyPressed();
 
         if (client.screen != null) {
@@ -28,10 +30,10 @@ public class ModMenuIntegration {
 
             assert client.player != null;
             client.player.sendSystemMessage(
-                    Component.literal("Auto Logout ")
-                            .append(Component.literal(ConfigManager.isModEnabled ? "enabled" : "disabled")
-                                    .withStyle(s -> s.withBold(true)))
-                            .withStyle(s -> s.withColor(ConfigManager.isModEnabled ? ChatFormatting.GREEN : ChatFormatting.RED))
+                Component.literal("Auto Logout ")
+                    .append(Component.literal(ConfigManager.isModEnabled ? "enabled" : "disabled")
+                        .withStyle(s -> s.withBold(true)))
+                    .withStyle(s -> s.withColor(ConfigManager.isModEnabled ? ChatFormatting.GREEN : ChatFormatting.RED))
             );
         }
 

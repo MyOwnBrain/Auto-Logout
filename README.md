@@ -18,18 +18,28 @@ Use **Commands** or the **Mod Menu Integration** to change the settings to fit y
 /auto-logout help
 /auto-logout enable
 /auto-logout disable
-/auto-logout threshold
-/auto-logout threshold <value>
+
+/auto-logout health-tracking enable
+/auto-logout health-tracking disable
+/auto-logout health-tracking threshold
+/auto-logout health-tracking threshold <value>
+
+/auto-logout tps-tracking enable
+/auto-logout tps-tracking disable
+/auto-logout tps-tracking threshold
+/auto-logout tps-tracking threshold <value>
+
 /auto-logout entity-tracking enable
 /auto-logout entity-tracking disable
 /auto-logout entity-tracking entity-count
 /auto-logout entity-tracking entity-count <value>
 /auto-logout entity-tracking radius
 /auto-logout entity-tracking radius <value>
+
 /auto-logout join-message enable
 /auto-logout join-message disable
 ```
-**Threshold** value has to be between **0** and **20**.<br/>
+**Health/TPS Threshold** value has to be between **0** and **20**.<br/>
 **Entity Count** value has to be between **1** and **10**.<br/>
 **Radius value** has to be between **1** and **64**.
 
@@ -37,12 +47,15 @@ Use **Commands** or the **Mod Menu Integration** to change the settings to fit y
 > [!IMPORTANT]
 > Requires [Mod Menu](https://modrinth.com/project/mOgUt4GM) and [Cloth Config API](https://modrinth.com/project/9s6osm5g)
 
-![https://cdn.modrinth.com/data/vJC9d9qa/images/f0390fdf295f1deb42c0f6847c1d571f5e656f2e.png](https://cdn.modrinth.com/data/vJC9d9qa/images/f0390fdf295f1deb42c0f6847c1d571f5e656f2e.png)
+![https://cdn.modrinth.com/data/vJC9d9qa/images/12b3314674831c7c0ddfac6d45e5f64fa8c2a168.png](https://cdn.modrinth.com/data/vJC9d9qa/images/12b3314674831c7c0ddfac6d45e5f64fa8c2a168.png)
 
 ### Defaults
 - Enabled: Yes
-- Threshold: 4
 - Keybinding: Not Bound
+- Health Tracking Enabled: Yes
+- Health Threshold: 4
+- TPS Tracking Enabled: No
+- TPS Threshold: 5
 - Entity Tracking: Yes
 - Entity Count: 5
 - Radius: 20

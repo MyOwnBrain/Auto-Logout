@@ -14,9 +14,14 @@ public class ConfigManager {
     private static final File CONFIG_FILE = new File("config/auto_logout.json");
 
     public static boolean isModEnabled = true;
-    public static float healthThreshold = 4.0f;
     public static String keyBinding = "key.keyboard.unknown";
     public static InputConstants.Key currentKeyBinding = InputConstants.getKey(keyBinding);
+
+    public static boolean isHealthTrackingEnabled = true;
+    public static float healthThreshold = 4.0f;
+
+    public static boolean isTPSTrackingEnabled = false;
+    public static int tpsThreshold = 5;
 
     public static boolean isEntityTrackingEnabled = true;
     public static int nearbyEntityCount = 5;
@@ -34,14 +39,23 @@ public class ConfigManager {
                 if (config.isModEnabled != null) isModEnabled = config.isModEnabled;
                 else updated = true;
 
-                if (config.healthThreshold != null) healthThreshold = config.healthThreshold;
-                else updated = true;
-
                 if (config.keyBinding != null && !config.keyBinding.isEmpty())
                     keyBinding = config.keyBinding;
                 else updated = true;
 
                 currentKeyBinding = InputConstants.getKey(keyBinding);
+
+                if (config.isHealthTrackingEnabled != null) isHealthTrackingEnabled = config.isHealthTrackingEnabled;
+                else updated = true;
+
+                if (config.healthThreshold != null) healthThreshold = config.healthThreshold;
+                else updated = true;
+
+                if (config.isTPSTrackingEnabled != null) isTPSTrackingEnabled = config.isTPSTrackingEnabled;
+                else updated = true;
+
+                if (config.tpsThreshold != null) tpsThreshold = config.tpsThreshold;
+                else updated = true;
 
                 if (config.isEntityTrackingEnabled != null)
                     isEntityTrackingEnabled = config.isEntityTrackingEnabled;
@@ -75,7 +89,7 @@ public class ConfigManager {
         try {
             CONFIG_FILE.getParentFile().mkdirs();
             try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-                ConfigData config = new ConfigData(isModEnabled, healthThreshold, currentKeyBinding != null ? currentKeyBinding.getName() : "key.keyboard.unknown", isEntityTrackingEnabled, nearbyEntityCount, radius, showJoinMessage);
+                ConfigData config = new ConfigData(isModEnabled, currentKeyBinding != null ? currentKeyBinding.getName() : "key.keyboard.unknown", isHealthTrackingEnabled, healthThreshold, isTPSTrackingEnabled, tpsThreshold, isEntityTrackingEnabled, nearbyEntityCount, radius, showJoinMessage);
                 GSON.toJson(config, writer);
             }
         } catch (IOException e) {
@@ -85,8 +99,13 @@ public class ConfigManager {
 
     private static class ConfigData {
         Boolean isModEnabled;
-        Float healthThreshold;
         String keyBinding;
+
+        Boolean isHealthTrackingEnabled;
+        Float healthThreshold;
+
+        Boolean isTPSTrackingEnabled;
+        Integer tpsThreshold;
 
         Boolean isEntityTrackingEnabled;
         Integer nearbyEntityCount;
@@ -94,10 +113,13 @@ public class ConfigManager {
 
         Boolean showJoinMessage;
 
-        public ConfigData(Boolean isModEnabled, Float healthThreshold, String keyBinding, Boolean isEntityTrackingEnabled, Integer nearbyEntityCount, Double radius, Boolean showJoinMessage) {
+        public ConfigData(Boolean isModEnabled, String keyBinding, Boolean isHealthTrackingEnabled, Float healthThreshold, Boolean isTPSTrackingEnabled, Integer tpsThreshold, Boolean isEntityTrackingEnabled, Integer nearbyEntityCount, Double radius, Boolean showJoinMessage) {
             this.isModEnabled = isModEnabled;
-            this.healthThreshold = healthThreshold;
             this.keyBinding = keyBinding;
+            this.isHealthTrackingEnabled = isHealthTrackingEnabled;
+            this.healthThreshold = healthThreshold;
+            this.isTPSTrackingEnabled = isTPSTrackingEnabled;
+            this.tpsThreshold = tpsThreshold;
             this.isEntityTrackingEnabled = isEntityTrackingEnabled;
             this.nearbyEntityCount = nearbyEntityCount;
             this.radius = radius;

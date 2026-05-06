@@ -13,7 +13,9 @@ import net.minecraft.world.phys.Vec3;
 public class NearestEntityFinder {
     private static List<Entity> nearestEntity = new ArrayList<>();
 
-    public static void updateNearestEntities(Minecraft client, double radius) {
+    public static void updateNearestEntities(double radius) {
+        Minecraft client = Minecraft.getInstance();
+
         if (client.level == null || client.player == null) return;
 
         Vec3 playerPos = client.player.position();

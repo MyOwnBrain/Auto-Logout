@@ -2,12 +2,13 @@
   "required": true,
   "minVersion": "0.8",
   "package": "de.myownbrain.autoLogout.client.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "client": [
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
+    "TPSTrackerMixin"
   ]
 }
