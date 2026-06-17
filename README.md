@@ -29,12 +29,12 @@ Use **Commands** or the **Mod Menu Integration** to change the settings to fit y
 /auto-logout tps-tracking threshold
 /auto-logout tps-tracking threshold <value>
 
-/auto-logout entity-tracking enable
-/auto-logout entity-tracking disable
-/auto-logout entity-tracking entity-count
-/auto-logout entity-tracking entity-count <value>
-/auto-logout entity-tracking radius
-/auto-logout entity-tracking radius <value>
+/auto-logout entity-scanning enable
+/auto-logout entity-scanning disable
+/auto-logout entity-scanning entity-count
+/auto-logout entity-scanning entity-count <value>
+/auto-logout entity-scanning radius
+/auto-logout entity-scanning radius <value>
 
 /auto-logout join-message enable
 /auto-logout join-message disable
