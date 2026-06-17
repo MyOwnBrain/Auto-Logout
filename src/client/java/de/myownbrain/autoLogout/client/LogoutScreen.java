@@ -22,7 +22,7 @@ public class LogoutScreen {
 
         MutableComponent text = Component.literal("You were disconnected by Auto Logout due to low health.\n\n").withStyle(style -> style.withBold(true).withColor(ChatFormatting.GREEN)).append(Component.literal("Health: " + twoDecFormat.format(client.player.getHealth()) + " (≈" + Math.floor(client.player.getHealth()) / 2 + " Hearts)\n").withStyle(style -> style.withColor(ChatFormatting.GOLD))).append(Component.literal(String.format("Coordinates: %s %s %s", playerX, playerY, playerZ)).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
 
-        if (ConfigManager.isEntityTrackingEnabled) {
+        if (ConfigManager.isEntityScanningEnabled) {
             List<String> entityNames = NearestEntityFinder.getNearestEntities().stream().map(entity -> entity instanceof Player ? entity.getName().getString() : entity.getType().getDescription().getString()).toList();
             text.append(Component.literal("\nNearby Entities: " + String.join(", ", entityNames)).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         }
@@ -41,7 +41,7 @@ public class LogoutScreen {
 
         MutableComponent text = Component.literal("You were disconnected by Auto Logout due to low TPS.\n\n").withStyle(style -> style.withBold(true).withColor(ChatFormatting.GREEN)).append(Component.literal("TPS: " + intFormat.format(TPSMonitor.getTps()) + " (" + twoDecFormat.format(TPSMonitor.getMspt()) + " MSPT)\n").withStyle(style -> style.withColor(ChatFormatting.GOLD))).append(Component.literal(String.format("Coordinates: %s %s %s", playerX, playerY, playerZ)).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
 
-        if (ConfigManager.isEntityTrackingEnabled) {
+        if (ConfigManager.isEntityScanningEnabled) {
             List<String> entityNames = NearestEntityFinder.getNearestEntities().stream().map(entity -> entity instanceof Player ? entity.getName().getString() : entity.getType().getDescription().getString()).toList();
             text.append(Component.literal("\nNearby Entities: " + String.join(", ", entityNames)).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         }

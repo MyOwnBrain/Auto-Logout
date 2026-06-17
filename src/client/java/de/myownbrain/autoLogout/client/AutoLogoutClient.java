@@ -22,7 +22,7 @@ public class AutoLogoutClient implements ClientModInitializer {
 
             if (ConfigManager.isHealthTrackingEnabled) HealthMonitor.monitorPlayerHealth();
             if (ConfigManager.isTPSTrackingEnabled) TPSMonitor.monitorTPS();
-            if (ConfigManager.isHealthTrackingEnabled && ConfigManager.isTPSTrackingEnabled && ConfigManager.isEntityTrackingEnabled)
+            if ((ConfigManager.isHealthTrackingEnabled || ConfigManager.isTPSTrackingEnabled) && ConfigManager.isEntityScanningEnabled)
                 NearestEntityFinder.updateNearestEntities(ConfigManager.radius);
         });
 

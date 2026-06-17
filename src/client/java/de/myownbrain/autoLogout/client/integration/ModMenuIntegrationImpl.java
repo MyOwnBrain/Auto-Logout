@@ -97,10 +97,10 @@ public class ModMenuIntegrationImpl implements ModMenuApi {
 
         general.addEntry(tps.build());
 
-        general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Show nearby entities after disconnection"), ConfigManager.isEntityTrackingEnabled)
+        general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Show nearby entities after disconnection"), ConfigManager.isEntityScanningEnabled)
             .setDefaultValue(true)
             .setSaveConsumer(newValue -> {
-                ConfigManager.isEntityTrackingEnabled = newValue;
+                ConfigManager.isEntityScanningEnabled = newValue;
                 ConfigManager.saveConfig();
             })
             .setTooltip(Component.literal("Whether nearby entities should be displayed on the disconnect screen."))
@@ -118,7 +118,7 @@ public class ModMenuIntegrationImpl implements ModMenuApi {
             .build()
         );
 
-        general.addEntry(entryBuilder.startDoubleField(Component.literal("Tracking Radius"), ConfigManager.radius)
+        general.addEntry(entryBuilder.startDoubleField(Component.literal("Scanning Radius"), ConfigManager.radius)
             .setDefaultValue(20.0)
             .setMin(1.0)
             .setMax(64.0)
@@ -126,7 +126,7 @@ public class ModMenuIntegrationImpl implements ModMenuApi {
                 ConfigManager.radius = newValue;
                 ConfigManager.saveConfig();
             })
-            .setTooltip(Component.literal("Radius in which entities are tracked."))
+            .setTooltip(Component.literal("Radius to scan for entities."))
             .build()
         );
 

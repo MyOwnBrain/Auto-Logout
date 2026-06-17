@@ -20,15 +20,15 @@ public class NearestEntityFinder {
 
         Vec3 playerPos = client.player.position();
         AABB searchBox = new AABB(
-                playerPos.x - radius, playerPos.y - radius, playerPos.z - radius,
-                playerPos.x + radius, playerPos.y + radius, playerPos.z + radius
+            playerPos.x - radius, playerPos.y - radius, playerPos.z - radius,
+            playerPos.x + radius, playerPos.y + radius, playerPos.z + radius
         );
 
         nearestEntity = client.level.getEntities(client.player, searchBox).stream()
-                .filter(entity -> entity instanceof LivingEntity)
-                .sorted(Comparator.comparingDouble(entity -> playerPos.distanceToSqr(entity.position())))
-                .limit(ConfigManager.nearbyEntityCount)
-                .toList();
+            .filter(entity -> entity instanceof LivingEntity)
+            .sorted(Comparator.comparingDouble(entity -> playerPos.distanceToSqr(entity.position())))
+            .limit(ConfigManager.nearbyEntityCount)
+            .toList();
     }
 
     public static List<Entity> getNearestEntities() {

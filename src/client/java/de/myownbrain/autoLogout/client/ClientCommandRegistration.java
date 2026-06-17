@@ -41,19 +41,19 @@ public class ClientCommandRegistration {
                                 .executes(ctx -> setTPSThreshold(IntegerArgumentType.getInteger(ctx, "value")))
                             )
                         ))
-                    .then(ClientCommands.literal("entity-tracking")
+                    .then(ClientCommands.literal("entity-scanning")
                         .then(ClientCommands.literal("enable")
-                            .executes(ctx -> toggleEntityTracking(true)))
+                            .executes(ctx -> toggleEntityScanning(true)))
                         .then(ClientCommands.literal("disable")
-                            .executes(ctx -> toggleEntityTracking(false)))
+                            .executes(ctx -> toggleEntityScanning(false)))
                         .then(ClientCommands.literal("entity-count")
                             .executes(ctx -> showNearbyEntityCount(ctx.getSource()))
                             .then(ClientCommands.argument("value", IntegerArgumentType.integer(1, 10))
                                 .executes(ctx -> setNearbyEntityCount(IntegerArgumentType.getInteger(ctx, "value")))))
                         .then(ClientCommands.literal("radius")
-                            .executes(ctx -> showTrackingRadius(ctx.getSource()))
+                            .executes(ctx -> showScanningRadius(ctx.getSource()))
                             .then(ClientCommands.argument("value", DoubleArgumentType.doubleArg(1.0, 64.0))
-                                .executes(ctx -> setTrackingRadius(DoubleArgumentType.getDouble(ctx, "value")))))
+                                .executes(ctx -> setScanningRadius(DoubleArgumentType.getDouble(ctx, "value")))))
                     )
                     .then(ClientCommands.literal("help")
                         .executes(ctx -> showHelp(ctx.getSource()))
@@ -135,12 +135,12 @@ public class ClientCommandRegistration {
         return Command.SINGLE_SUCCESS;
     }
 
-    // Entity Tracking
-    private static int toggleEntityTracking(boolean enable) {
+    // Entity Scanning
+    private static int toggleEntityScanning(boolean enable) {
         if (Minecraft.getInstance().player == null) return 0;
-        ConfigManager.isEntityTrackingEnabled = enable;
+        ConfigManager.isEntityScanningEnabled = enable;
         ConfigManager.saveConfig();
-        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Entity Tracking ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)));
+        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Entity Scanning ").append(Component.literal(enable ? "enabled" : "disabled").withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(enable ? ChatFormatting.GREEN : ChatFormatting.RED)));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -164,21 +164,21 @@ public class ClientCommandRegistration {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int showTrackingRadius(FabricClientCommandSource source) {
-        source.sendFeedback(Component.literal("Tracking Radius set to ").append(Component.literal(String.valueOf(ConfigManager.radius)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
+    private static int showScanningRadius(FabricClientCommandSource source) {
+        source.sendFeedback(Component.literal("Scanning Radius set to ").append(Component.literal(String.valueOf(ConfigManager.radius)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setTrackingRadius(double radius) {
+    private static int setScanningRadius(double radius) {
         if (Minecraft.getInstance().player == null) return 0;
 
         if (radius >= 1.0 && radius <= 64.0) {
             ConfigManager.radius = radius;
             ConfigManager.saveConfig();
-            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Tracking Radius set to ").append(Component.literal(String.valueOf(ConfigManager.radius)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Scanning Radius set to ").append(Component.literal(String.valueOf(ConfigManager.radius)).withStyle(style -> style.withBold(true))).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         } else {
             Minecraft.getInstance().player.sendSystemMessage(
-                Component.literal("Invalid Tracking Radius! Must be between 1 and 64.").withStyle(style -> style.withColor(ChatFormatting.RED))
+                Component.literal("Invalid Scanning Radius! Must be between 1 and 64.").withStyle(style -> style.withColor(ChatFormatting.RED))
             );
         }
         return Command.SINGLE_SUCCESS;
@@ -211,13 +211,13 @@ public class ClientCommandRegistration {
             .append(Component.literal("/auto-logout tps-tracking threshold <value>").withStyle(ChatFormatting.AQUA)).append(Component.literal(" - Sets the TPS threshold\n").withStyle(ChatFormatting.WHITE))
             .append(Component.literal("/auto-logout join-message enable").withStyle(ChatFormatting.GREEN)).append(Component.literal(" - Enables the message when joining a world\n").withStyle(ChatFormatting.WHITE))
             .append(Component.literal("/auto-logout join-message disable").withStyle(ChatFormatting.RED)).append(Component.literal(" - Disables the message when joining a world\n").withStyle(ChatFormatting.WHITE))
-            .append(Component.literal("\nEntity Tracking:\n").withStyle(ChatFormatting.GOLD))
-            .append(Component.literal("/auto-logout entity-tracking enable").withStyle(ChatFormatting.GREEN)).append(Component.literal(" - Enables Entity Tracking\n").withStyle(ChatFormatting.WHITE))
-            .append(Component.literal("/auto-logout entity-tracking disable").withStyle(ChatFormatting.RED)).append(Component.literal(" - Disables Entity Tracking\n").withStyle(ChatFormatting.WHITE))
-            .append(Component.literal("/auto-logout entity-tracking entity-count").withStyle(ChatFormatting.DARK_PURPLE)).append(Component.literal(" - Displays the current Nearby Entity Count\n").withStyle(ChatFormatting.WHITE))
-            .append(Component.literal("/auto-logout entity-tracking entity-count <value>").withStyle(ChatFormatting.AQUA)).append(Component.literal(" - Sets the Nearby Entity Count\n").withStyle(ChatFormatting.WHITE))
-            .append(Component.literal("/auto-logout entity-tracking radius").withStyle(ChatFormatting.DARK_PURPLE)).append(Component.literal(" - Displays the current Tracking Radius\n").withStyle(ChatFormatting.WHITE))
-            .append(Component.literal("/auto-logout entity-tracking radius <value>").withStyle(ChatFormatting.AQUA)).append(Component.literal(" - Sets the Tracking Radius\n").withStyle(ChatFormatting.WHITE))
+            .append(Component.literal("\nEntity Scanning:\n").withStyle(ChatFormatting.GOLD))
+            .append(Component.literal("/auto-logout entity-scanning enable").withStyle(ChatFormatting.GREEN)).append(Component.literal(" - Enables Entity Tracking\n").withStyle(ChatFormatting.WHITE))
+            .append(Component.literal("/auto-logout entity-scanning disable").withStyle(ChatFormatting.RED)).append(Component.literal(" - Disables Entity Tracking\n").withStyle(ChatFormatting.WHITE))
+            .append(Component.literal("/auto-logout entity-scanning entity-count").withStyle(ChatFormatting.DARK_PURPLE)).append(Component.literal(" - Displays the current Nearby Entity Count\n").withStyle(ChatFormatting.WHITE))
+            .append(Component.literal("/auto-logout entity-scanning entity-count <value>").withStyle(ChatFormatting.AQUA)).append(Component.literal(" - Sets the Nearby Entity Count\n").withStyle(ChatFormatting.WHITE))
+            .append(Component.literal("/auto-logout entity-scanning radius").withStyle(ChatFormatting.DARK_PURPLE)).append(Component.literal(" - Displays the current Tracking Radius\n").withStyle(ChatFormatting.WHITE))
+            .append(Component.literal("/auto-logout entity-scanning radius <value>").withStyle(ChatFormatting.AQUA)).append(Component.literal(" - Sets the Tracking Radius\n").withStyle(ChatFormatting.WHITE))
         );
 
         return Command.SINGLE_SUCCESS;
