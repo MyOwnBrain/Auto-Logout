@@ -146,9 +146,11 @@ public class ModMenuIntegrationImpl implements ModMenuApi {
     }
 
     public static boolean isToggleKeyPressed() {
-        if (ConfigManager.currentKeyBinding == null) {
-            ConfigManager.currentKeyBinding = InputConstants.UNKNOWN;
-        }
+        if (ConfigManager.currentKeyBinding == null) ConfigManager.currentKeyBinding = InputConstants.UNKNOWN;
+        if (ConfigManager.currentKeyBinding == InputConstants.UNKNOWN
+            || ConfigManager.currentKeyBinding.getValue() == InputConstants.UNKNOWN.getValue()
+        ) return false;
+
         return InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), ConfigManager.currentKeyBinding.getValue());
     }
 }
