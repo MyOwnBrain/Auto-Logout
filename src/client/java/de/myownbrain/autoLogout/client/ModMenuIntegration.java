@@ -19,7 +19,7 @@ public class ModMenuIntegration {
 
         boolean isPressed = ModMenuIntegrationImpl.isToggleKeyPressed();
 
-        if (client.screen != null) {
+        if (client.gui.screen() != null) {
             wasKeyPressed = false;
             return;
         }
