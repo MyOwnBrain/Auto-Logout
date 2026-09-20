@@ -8,7 +8,6 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -45,6 +44,7 @@ public class ModMenuIntegrationImpl implements ModMenuApi {
                 ConfigManager.saveConfig();
             })
             .setTooltip(Component.literal("Keybinding to toggle Auto Logout in general."))
+            .setAllowMouse(false)
             .build());
 
         SubCategoryBuilder health = entryBuilder.startSubCategory(Component.literal("Health Tracking")).setExpanded(ConfigManager.isHealthTrackingEnabled);
@@ -151,6 +151,6 @@ public class ModMenuIntegrationImpl implements ModMenuApi {
             || ConfigManager.currentKeyBinding.getValue() == InputConstants.UNKNOWN.getValue()
         ) return false;
 
-        return InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), ConfigManager.currentKeyBinding.getValue());
+        return InputConstants.isKeyDown(ConfigManager.currentKeyBinding.getValue());
     }
 }

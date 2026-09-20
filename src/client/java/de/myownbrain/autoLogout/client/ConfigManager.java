@@ -2,12 +2,15 @@ package de.myownbrain.autoLogout.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -15,6 +18,7 @@ import java.util.function.Function;
 public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final File CONFIG_FILE = new File("config/auto_logout.json");
+    private static final File BACKUP_FILE = new File("config/auto_logout.json.bak");
     private static final int CONFIG_VERSION = 1;
 
     public static boolean isModEnabled = true;
@@ -39,46 +43,62 @@ public class ConfigManager {
         if (CONFIG_FILE.exists()) {
             try (FileReader reader = new FileReader(CONFIG_FILE)) {
                 String configJSON = reader.readAllAsString();
-                ConfigData config = GSON.fromJson(configJSON, ConfigData.class);
+                ConfigData config = configJSON.isBlank() ? null : GSON.fromJson(configJSON, ConfigData.class);
 
-                int configVersion = config.configVersion == null ? 0 : config.configVersion;
-                if (!configJSON.isEmpty() && configVersion < CONFIG_VERSION)
-                    config = migrateConfig(configVersion, configJSON);
+                if (config == null) updated = true; // empty file: keep the defaults and write them back below
+                else {
+                    int configVersion = config.configVersion == null ? 0 : config.configVersion;
+                    if (configVersion < CONFIG_VERSION) {
+                        config = migrateConfig(configVersion, configJSON);
+                        updated = true;
+                    }
 
-                if (config.isModEnabled != null) isModEnabled = config.isModEnabled;
-                else updated = true;
+                    if (config.isModEnabled != null) isModEnabled = config.isModEnabled;
+                    else updated = true;
 
-                if (config.keyBinding != null && !config.keyBinding.isEmpty()) keyBinding = config.keyBinding;
-                else updated = true;
+                    if (config.keyBinding != null && !config.keyBinding.isEmpty()) keyBinding = config.keyBinding;
+                    else updated = true;
 
-                currentKeyBinding = InputConstants.getKey(keyBinding);
+                    try {
+                        currentKeyBinding = InputConstants.getKey(keyBinding);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Unknown key '" + keyBinding + "', resetting the hotkey.");
+                        keyBinding = "key.keyboard.unknown";
+                        currentKeyBinding = InputConstants.UNKNOWN;
+                        updated = true;
+                    }
 
-                if (config.isHealthTrackingEnabled != null) isHealthTrackingEnabled = config.isHealthTrackingEnabled;
-                else updated = true;
+                    if (config.isHealthTrackingEnabled != null)
+                        isHealthTrackingEnabled = config.isHealthTrackingEnabled;
+                    else updated = true;
 
-                if (config.healthThreshold != null) healthThreshold = config.healthThreshold;
-                else updated = true;
+                    if (config.healthThreshold != null) healthThreshold = config.healthThreshold;
+                    else updated = true;
 
-                if (config.isTPSTrackingEnabled != null) isTPSTrackingEnabled = config.isTPSTrackingEnabled;
-                else updated = true;
+                    if (config.isTPSTrackingEnabled != null) isTPSTrackingEnabled = config.isTPSTrackingEnabled;
+                    else updated = true;
 
-                if (config.tpsThreshold != null) tpsThreshold = config.tpsThreshold;
-                else updated = true;
+                    if (config.tpsThreshold != null) tpsThreshold = config.tpsThreshold;
+                    else updated = true;
 
-                if (config.isEntityScanningEnabled != null) isEntityScanningEnabled = config.isEntityScanningEnabled;
-                else updated = true;
+                    if (config.isEntityScanningEnabled != null)
+                        isEntityScanningEnabled = config.isEntityScanningEnabled;
+                    else updated = true;
 
-                if (config.nearbyEntityCount != null) nearbyEntityCount = config.nearbyEntityCount;
-                else updated = true;
+                    if (config.nearbyEntityCount != null) nearbyEntityCount = config.nearbyEntityCount;
+                    else updated = true;
 
-                if (config.radius != null) radius = config.radius;
-                else updated = true;
+                    if (config.radius != null) radius = config.radius;
+                    else updated = true;
 
-                if (config.showJoinMessage != null) showJoinMessage = config.showJoinMessage;
-                else updated = true;
-
+                    if (config.showJoinMessage != null) showJoinMessage = config.showJoinMessage;
+                    else updated = true;
+                }
             } catch (IOException e) {
                 System.err.println("Failed to load config: " + e.getMessage());
+            } catch (JsonParseException e) {
+                System.err.println("Config is invalid: " + e.getMessage());
+                if (backupBrokenConfig()) updated = true; // only overwrite if the backup worked
             }
         } else updated = true;
 
@@ -94,6 +114,17 @@ public class ConfigManager {
             }
         } catch (IOException e) {
             System.err.println("Failed to save config: " + e.getMessage());
+        }
+    }
+
+    private static boolean backupBrokenConfig() {
+        try {
+            Files.copy(CONFIG_FILE.toPath(), BACKUP_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.err.println("Config file is invalid. A copy was saved to " + BACKUP_FILE.getPath() + " and the defaults were restored.");
+            return true;
+        } catch (IOException e) {
+            System.err.println("Config file is invalid and the backup failed, leaving the file untouched: " + e.getMessage());
+            return false;
         }
     }
 
@@ -133,15 +164,13 @@ public class ConfigManager {
     private static ConfigData migrateConfig(int configVersion, String configJSON) {
         List<Function<String, String>> migrations = new ArrayList<>();
         migrations.add(ConfigManager::migrateConfigV0toV1);
-        migrations.subList(configVersion, migrations.size());
 
         String newConfigJSONString = configJSON;
-        for (Function<String, String> migration : migrations)
+        for (Function<String, String> migration : migrations.subList(configVersion, migrations.size()))
             newConfigJSONString = migration.apply(newConfigJSONString);
+
         ConfigData newConfig = GSON.fromJson(newConfigJSONString, ConfigData.class);
         newConfig.configVersion = CONFIG_VERSION;
-
-        saveConfig();
         return newConfig;
     }
 
